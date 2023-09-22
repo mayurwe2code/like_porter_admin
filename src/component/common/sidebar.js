@@ -252,32 +252,23 @@ const Sidebar = (props) => {
                 : "banner-category-item "
             }
           >
-            <Link to="/orderList">
+            {/* <Link to="/orderList">
               <i className="flaticon-dairy-products"></i>
               <span>Customer Order</span>
+            </Link> */}
+          </li>
+
+          <li
+            className={
+              props.style.message === "setVehicleFare"
+                ? "banner-category-item active"
+                : "banner-category-item "
+            }
+          >
+            <Link to="/setVehicleFare">
+              <i className="flaticon-dairy-products"></i>
+              <span>Set Vehicle Vares</span>
             </Link>
-            {/* <div className="banner-category-dropdown">
-              <h5>dairy items</h5>
-              <div className="banner-sub-category">
-                <ul>
-                  <li>
-                    <a href="#">Eggs</a>
-                  </li>
-                  <li>
-                    <a href="#">milk</a>
-                  </li>
-                  <li>
-                    <a href="#">Cheese</a>
-                  </li>
-                  <li>
-                    <a href="#">Butter</a>
-                  </li>
-                  <li>
-                    <a href="#">Shore</a>
-                  </li>
-                </ul>
-              </div>
-            </div> */}
           </li>
 
           <li

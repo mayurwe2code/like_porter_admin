@@ -3,9 +3,11 @@ import { Button } from "react-bootstrap";
 
 import Form from "react-bootstrap/Form";
 import DataTable from "react-data-table-component";
-
 import useValidation from "../common/useValidation";
-import { devliveryOrderStatus, getOrderWithDriver } from "../api/api";
+import { TbTruck } from "react-icons/tb";
+
+import { devliveryOrderStatus, getOrderWithDriver, getDriverList, driverAsignForOrder } from "../api/api";
+// import { getDriverList } from "../api/api"
 import Sidebar from "../common/sidebar";
 import moment from "moment";
 import Loader from "../common/loader";
@@ -13,7 +15,7 @@ const OrderWithDriver = () => {
   const [ordertable, setorderTable] = useState([]);
   const [apicall, setapicall] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [driverList, setDriverList] = useState([]);
   let admin_token = localStorage.getItem("admin_token");
   // date filter intialstate----------------
   const initialFormState = {
@@ -57,16 +59,16 @@ const OrderWithDriver = () => {
         paddingLeft: "0px",
       },
     },
-    {
-      name: "Total amount",
-      selector: (row) => row.payment || <b>unavailable</b>,
-      sortable: true,
-      width: "140px",
-      center: true,
-      style: {
-        paddingLeft: "0px",
-      },
-    },
+    // {
+    //   name: "Total amount",
+    //   selector: (row) => row.payment || <b>unavailable</b>,
+    //   sortable: true,
+    //   width: "140px",
+    //   center: true,
+    //   style: {
+    //     paddingLeft: "0px",
+    //   },
+    // },
 
     {
       name: "Username",
@@ -76,6 +78,56 @@ const OrderWithDriver = () => {
       center: true,
     },
 
+    // 'pickuped','delivered','rejected_by_driver','failed_delivery_attempt','ready_to_pickup','ready_to_packing','driver_not_responsed','cancelled_by_user','pandding','in_transit'
+
+    {
+      name: "Delivery Address",
+      selector: (row) => row.address || <b>unavailable</b>,
+      sortable: true,
+      width: "140px",
+      center: true,
+    },
+    {
+      name: "Order date",
+      selector: (row) =>
+        moment(row.order_date).format("YYYY-MM-DD") || <b>unavailable</b>,
+      sortable: true,
+      width: "140px",
+      center: true,
+    },
+
+    {
+      name: "Delivery date",
+      selector: (row) =>
+        moment(row.delivery_date).format("YYYY-MM-DD") || <b>unavailable</b>,
+      sortable: true,
+      width: "140px",
+      center: true,
+    },
+    {
+      name: "Order Assign date",
+      selector: (row) =>
+        moment(row.order_asign_date).format("YYYY-MM-DD") || <b>unavailable</b>,
+      sortable: true,
+      width: "140px",
+      center: true,
+    },
+    {
+      name: "DriverContact",
+      selector: (row) => row.contect_no || <b>unavailable</b>,
+      sortable: true,
+      width: "140px",
+      center: true,
+    },
+
+    {
+      name: "User Selcet Vehicle Type",
+      selector: (row) => <b>{row.vehicle_type}</b> || <b>unavailable</b>,
+
+      // sortable: true,
+      width: "140px",
+      center: true,
+    },
     {
       name: "Status",
       width: "170px",
@@ -132,7 +184,6 @@ const OrderWithDriver = () => {
       sortable: true,
     },
 
-    // 'pickuped','delivered','rejected_by_driver','failed_delivery_attempt','ready_to_pickup','ready_to_packing','driver_not_responsed','cancelled_by_user','pandding','in_transit'
     {
       name: "Change Status",
       width: "150px",
@@ -160,46 +211,34 @@ const OrderWithDriver = () => {
         </Form.Select>
       ),
       sortable: true,
-    },
+    }, {
+      name: "Order Assign",
+      width: "140px",
 
-    {
-      name: "Delivery Address",
-      selector: (row) => row.address || <b>unavailable</b>,
-      sortable: true,
-      width: "140px",
-      center: true,
-    },
-    {
-      name: "Order date",
-      selector: (row) =>
-        moment(row.order_date).format("YYYY-MM-DD") || <b>unavailable</b>,
-      sortable: true,
-      width: "140px",
-      center: true,
-    },
-
-    {
-      name: "Delivery date",
-      selector: (row) =>
-        moment(row.delivery_date).format("YYYY-MM-DD") || <b>unavailable</b>,
-      sortable: true,
-      width: "140px",
-      center: true,
-    },
-    {
-      name: "Order Assign date",
-      selector: (row) =>
-        moment(row.order_asign_date).format("YYYY-MM-DD") || <b>unavailable</b>,
-      sortable: true,
-      width: "140px",
-      center: true,
-    },
-    {
-      name: "DriverContact",
-      selector: (row) => row.contect_no || <b>unavailable</b>,
-      sortable: true,
-      width: "140px",
-      center: true,
+      selector: (row) => (
+        <Form.Select
+          aria-label="Select Driver"
+          size="sm"
+          className="w-100"
+          onChange={(e) => onChangeofDriverAsign(row.order_id, e)}
+          name="select_driver"
+          value={row.driver_id}
+        >
+          <option value="">drivers</option>
+          {driverList.map((item) => {
+            return (
+              row.vehicle_type === item.vehicle_type ?
+                <>
+                  <option value={item.driver_id}>
+                    {item.driver_name}&nbsp;
+                    {item.driver_last_name}
+                  </option>
+                </>
+                : null
+            );
+          })}
+        </Form.Select>
+      ),
     },
   ];
 
@@ -237,6 +276,7 @@ const OrderWithDriver = () => {
   //order  data useEffect.... get all order list
   useEffect(() => {
     OrderData();
+    getOnlydriverList();
   }, [apicall]);
 
   let headerObj = { headers: { admin_token: admin_token } };
@@ -284,19 +324,33 @@ const OrderWithDriver = () => {
 
   const onStatusChange = async (e, id) => {
     await devliveryOrderStatus(id, e.target.value);
-
     setapicall(true);
     OrderData();
+  };
+  const onChangeofDriverAsign = async (order_id, e) => {
+    await driverAsignForOrder(order_id, e.target.value);
+    setapicall(true);
+    OrderData();
+  };
+
+  const getOnlydriverList = async () => {
+    setLoading(true);
+    const response = await getDriverList();
+    setLoading(false);
+
+    console.log("ffff--" + JSON.stringify(response));
+    setDriverList(response);
+    setapicall(false);
   };
   return (
     <div>
       {loading === true ? <Loader /> : null}
 
       <div className="row admin_row">
-        <div className="col-lg-3 col-md-6 col-sm-7 col-10">
+        <div className="col-lg-2 col-md-6 col-sm-7 col-10">
           <Sidebar style={{ message: "order with driver" }} />
         </div>
-        <div className="col-lg-9  admin_content_bar mt-5">
+        <div className="col-lg-10  admin_content_bar mt-5">
           <div className="main_content_div">
             <div
               className="dashboard-main-container mt-df25 mt-lg-31"
@@ -305,6 +359,7 @@ const OrderWithDriver = () => {
               <div className="">
                 <div className="page_main_contant">
                   <h4>Order List with driver</h4>
+
                   <div className=" mt-3 p-3">
                     <div className="row pb-3     align-items-center">
                       <div className="col-md-3 col-sm-6 aos_input mb-2">

@@ -123,7 +123,7 @@ const OrderList = () => {
           }
           value={row.driver_id ? row.driver_id : 0}
           name="status_order"
-          // value={row.status_order}
+        // value={row.status_order}
         >
           <option value="">drivers</option>
           {driverList.map((item) => {
@@ -168,8 +168,8 @@ const OrderList = () => {
         value === null || value === ""
           ? "Please Fill...."
           : /[^A-Za-z 0-9]/g.test(value)
-          ? "Cannot use special character "
-          : null,
+            ? "Cannot use special character "
+            : null,
     ],
   };
 
@@ -234,10 +234,10 @@ const OrderList = () => {
       {loading === true ? <Loader /> : null}
 
       <div className="row admin_row">
-        <div className="col-lg-3 col-md-6 col-sm-7 col-10">
+        <div className="col-lg-2 col-md-6 col-sm-7 col-10">
           <Sidebar style={{ message: "order List" }} />
         </div>
-        <div className="col-lg-9  admin_content_bar mt-5">
+        <div className="col-lg-10  admin_content_bar mt-5">
           <div className="main_content_div">
             <div
               className="dashboard-main-container mt-df25 mt-lg-31"
@@ -265,10 +265,10 @@ const OrderList = () => {
                         </Form.Group>
                         {errors.order_id
                           ? (errors.order_id || []).map((error) => {
-                              return (
-                                <small className="text-danger">{error}</small>
-                              );
-                            })
+                            return (
+                              <small className="text-danger">{error}</small>
+                            );
+                          })
                           : null}
                       </div>
 
@@ -304,16 +304,16 @@ const OrderList = () => {
                       title="Assigned Successfully"
                       text={"Assign"}
                       onConfirm={closeAssignAlert}
-                      // showCancelButton={}
-                      // onCancel={}
+                    // showCancelButton={}
+                    // onCancel={}
                     />
                     <SweetAlert
                       show={orderNoVehicleAlert}
                       title="Driver has no vehicle"
                       text={"Not Assign"}
                       onConfirm={closeAssignAlert}
-                      // showCancelButton={}
-                      // onCancel={}
+                    // showCancelButton={}
+                    // onCancel={}
                     />
 
                     <DataTable

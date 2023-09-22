@@ -25,6 +25,7 @@ import {
   VehicleList,
   VehicleListById,
   VehicleListFilter,
+  vehicle_fare_list
 } from "../api/api";
 import moment from "moment";
 
@@ -43,6 +44,7 @@ const VehicleRegisterByAdmin = () => {
     puc_certificate: "",
     insurance: "",
     registration: "",
+    vehicle_type:""
   };
   const [vehicleAssignAlert, setvehicleAssignAlert] = useState(false);
   const [apicall, setapicall] = useState(false);
@@ -66,6 +68,8 @@ const VehicleRegisterByAdmin = () => {
   const [pucErrorMessage, setPucErrorMessage] = useState("");
   const [insurenceerrorMessage, setInsurenceErrorMessage] = useState("");
   const [registrationErrorMessage, setRegistrationErrorMessage] = useState("");
+  const [dataOfVehicleFareList, setDataOfVehicleFareList] = useState("");
+  const [vehicleTypeValue, setVehicleTypeValue] = useState("");
 
   const allowedFormats = ["image/jpeg", "image/jpg", "image/png"];
 
@@ -435,6 +439,12 @@ const VehicleRegisterByAdmin = () => {
           //   ? "Invalid email address"
           null,
     ],
+    vehicle_type: [
+      (value) =>
+        value === null || value === ""
+          ? "Vehicle type is required"
+            : null,
+    ],
   };
 
   //custom validation import--------------
@@ -480,6 +490,7 @@ const VehicleRegisterByAdmin = () => {
   useEffect(() => {
     getAllVehicleList();
     getOnlydriverList();
+    vehicle_fare_list_call()
   }, [apicall]);
 
   // get all vehicle list funtion-------------
@@ -500,12 +511,21 @@ const VehicleRegisterByAdmin = () => {
     setDriverList(response);
     setapicall(false);
   };
-
+  const vehicle_fare_list_call = async () => {
+    setLoading(true);
+    let data_of_vehicle_fare_list = await vehicle_fare_list()
+    console.log(data_of_vehicle_fare_list)
+    setDataOfVehicleFareList(data_of_vehicle_fare_list["response"])
+    setLoading(false);
+}
   // add vehicle submit button---------------
   const handleAddVehicle = async (e) => {
     e.preventDefault();
 
     if (validate()) {
+      console.log("satett--"+JSON.stringify(state))
+     
+     
       const response = await AddVehicleByAdmin(
         state,
         pucCertificateFile,
@@ -614,10 +634,10 @@ const VehicleRegisterByAdmin = () => {
       {loading === true ? <Loader /> : null}
 
       <div className="row admin_row">
-        <div className="col-lg-3 col-md-6 col-sm-7 col-10">
+        <div className="col-lg-2 col-md-6 col-sm-7 col-10">
           <Sidebar style={{ message: "vehicleRegister" }} />
         </div>
-        <div className="col-lg-9  admin_content_bar mt-5">
+        <div className="col-lg-10  admin_content_bar mt-5">
           <div className="main_content_div">
             <div
               className="dashboard-main-container mt-df25 mt-lg-31"
@@ -1122,7 +1142,39 @@ const VehicleRegisterByAdmin = () => {
                 </Form.Group>
               </div>
 
-              <div className="col-md-3 col-sm-4 p-2 text-center">
+
+              <div className="col-md-6">
+              <Form.Group className="mb-3">
+                <Form.Label className="" column sm="6">
+                  Select Vehicle Type<small className="text-danger">*</small>
+                </Form.Label>
+                <Form.Select
+                  aria-label="Complaint"
+                  size="sm"
+                  className="w-100"
+                  onChange={onInputChange}
+                  name="vehicle_type"
+                  value={state.vehicle_type}
+                >
+                  <option value="">Select</option>
+{(dataOfVehicleFareList||[]).map((item,index)=>{
+ return (<><option value={item.vehicle_type}> {item.vehicle_type}</option></>)
+})}
+
+                </Form.Select>
+
+                {errors.vehicle_type
+                  ? (errors.vehicle_type || []).map((error, i) => {
+                      return (
+                        <small className="text-danger" key={i}>
+                          {error}
+                        </small>
+                      );
+                    })
+                  : null}
+              </Form.Group></div>
+
+              <div className="col-md-3 mt-4 col-sm-4 p-2 text-center">
                 <div className="manufacture_date addvariety_inputbox">
                   <Button
                     variant="outline-success"

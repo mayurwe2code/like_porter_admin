@@ -1,0 +1,201 @@
+import React, { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
+import { BsTrash } from "react-icons/bs";
+import { BsRepeat } from "react-icons/bs";
+import { BiEdit } from "react-icons/bi";
+import Form from "react-bootstrap/Form";
+import DataTable from "react-data-table-component";
+import Modal from "react-bootstrap/Modal";
+
+// import SweetAlert from "sweetalert-react";
+import "sweetalert/dist/sweetalert.css";
+
+// import useValidation from "../common/useValidation";
+import {
+    vehicle_fare_list
+} from "../api/api";
+import Sidebar from "../common/sidebar";
+import Loader from "../common/loader";
+import moment from "moment";
+const SetVehicleFare = () => {
+    let [isLoading, setIsLoading] = useState(true);
+    let [minFare, setMinFare] = useState();
+    let [farePerKm, setFarePerKm] = useState();
+    let [dataOfVehicleFareList, setDataOfVehicleFareList] = useState([]);
+    const columns = [
+        {
+            name: "Vehicle Type",
+            selector: (row) => row.vehicle_type || <b>unavailable < /b>,
+            width: "150px",
+            center: true,
+            style: {
+                paddingRight: "32px",
+                paddingLeft: "0px",
+            },
+        },
+        {
+            name: "Fare/KM",
+            selector: (row) => <div>
+                <Form.Group className="my-1 mx-3">
+
+                    <Form.Control
+                        type="number"
+                        className = { "form-control"}
+                        value={ farePerKm }
+                        name="fare_per_km"
+                        onChange={(e) => { valuSetInInput(e, "fare_per_km" + row.id + ""); }}
+id = { "fare_per_km" + row.id + "" }
+placeholder = { row.fare_per_km }
+    />
+    </Form.Group>
+    < /div> || <b>unavailable</b >,
+    width: "150px",
+        center: true,
+            style: {
+    paddingRight: "32px",
+        paddingLeft: "0px",
+            },
+        },
+{
+    name: "Minimum Fare",
+        selector: (row) => <div className="" > <Form.Group className="my-1 mx-3" >
+
+            <Form.Control
+                    type="number"
+    placeholder = { row.min_fare }
+    className = { "form-control"}
+    value = { minFare }
+    name = "min_fare"
+    onChange = {(e) => { valuSetInInput(e, "min_fare" + row.id + "") }
+}
+id = { "min_fare" + row.id + "" }
+    />
+    </Form.Group></div > || <b>unavailable < /b>,
+width: "150px",
+    center: true,
+        style: {
+    paddingRight: "32px",
+        paddingLeft: "0px",
+            },
+        },
+{
+    name: "Active & Deactive",
+        selector: (row) => row.is_active === 1 ? <b>active < /b> : <b>Deactive</b >,
+            width: "150px",
+                center: true,
+                    style: {
+        paddingRight: "32px",
+            paddingLeft: "0px",
+            },
+},
+
+// {
+//     name: "Edit",
+//     width: "110px",
+//     style: {
+//         paddingRight: "12px",
+//         paddingLeft: "0px",
+//     },
+//     center: true,
+//     selector: (row) => (
+//         <div className={"actioncolimn"}>
+//             <BiEdit
+//                 className=" p-0  mr-1  editiconn text-secondary"
+//                 onClick={(e) => { handleEditShow(e, row.vehicle_id) }}
+//             />
+//             {/* {row.is_active === 1 ?
+//           <BsTrash
+//             className=" p-0 m-0 editiconn text-danger"
+//             onClick={() => handleAlert(row.vehicle_id, "deleted")}
+//           /> :
+//           <BsRepeat
+//             className=" p-0 m-0 editiconn text-success"
+//             onClick={() => handleAlert(row.vehicle_id, "active")}
+//           />} */}
+//         </div>
+//     ),
+// },
+
+{
+    name: "Action",
+        width: "100px",
+            style: {
+        paddingRight: "12px",
+            paddingLeft: "0px",
+            },
+    center: true,
+        selector: (row) => (
+            <div className= { "actioncolimn"} >
+            <Button
+                        className=" btn-sm btn-success mx-2"
+        // onClick={fareSave()}
+        >
+        { " "}
+    Save
+        < /Button>
+        < /div>
+            ),
+},
+    ];
+useEffect(() => {
+    vehicle_fare_list_call()
+}, [])
+// fare update  edit show--------------------
+// const handleEditShow = async (id) => {
+//     // const response = await VehicleListById(id);
+//     // setState(response[0]);
+//     setShowmodel(true);
+// };
+const vehicle_fare_list_call = async () => {
+    setIsLoading(true)
+    let data_of_vehicle_fare_list = await vehicle_fare_list()
+    console.log(data_of_vehicle_fare_list)
+    setDataOfVehicleFareList(data_of_vehicle_fare_list["response"])
+    setIsLoading(false)
+}
+
+const valuSetInInput = (e, id_) => {
+    // setFarePerKm(e.target.value);
+    if (e.target.value) {
+        document.getElementById(id_).value = e.target.value;
+    }
+
+}
+
+return (
+    <div>
+        { isLoading === true ? <Loader /> : null}
+
+    < div className = "row admin_row" >
+        <div className="col-lg-2 col-md-6 col-sm-7 col-10" >
+            <Sidebar style={ { message: "setVehicleFare" } } />
+                < /div>
+                < div className = "col-lg-10  admin_content_bar mt-5" >
+                    <div className="main_content_div" >
+                        <div
+                            className="dashboard-main-container mt-df25 mt-lg-31"
+id = "dashboard-body"
+    >
+    <div className="" >
+        <div className="page_main_contant" >
+            <h4>Order List with driver < /h4>
+            < div className = " mt-3 p-3" >
+                <DataTable
+                                            columns={ columns }
+data = { dataOfVehicleFareList }
+pagination
+highlightOnHover
+pointerOnHover
+className = { "table_body product_table"}
+    />
+    </div>
+    < /div>
+    < /div>
+    < /div>
+    < /div>
+    < /div>
+    < /div>
+    < /div>
+    )
+}
+export default SetVehicleFare;

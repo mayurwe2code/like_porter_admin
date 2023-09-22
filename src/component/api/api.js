@@ -573,12 +573,23 @@ export const getAllworkingAreafilter = async (city, area_name, pin_code) => {
   return response.data;
 };
 
-export const devliveryOrderStatus = async (id, statusValue) => {
+export const devliveryOrderStatus = async (order_id, statusValue) => {
   const response = await axios.put(
     `${process.env.REACT_APP_BASEURL_0}/change_order_detaile_status`,
     {
-      order_id: id,
+      order_id: order_id,
       order_status: statusValue,
+    },
+    { headers: { admin_token: `${admin_token}` } }
+  );
+  return response.data;
+};
+export const driverAsignForOrder = async (id, driver_id) => {
+  const response = await axios.put(
+    `${process.env.REACT_APP_BASEURL_0}/order_asign_by_delivery_admin`,
+    {
+      order_id: id,
+      driver_id: driver_id,
     },
     { headers: { admin_token: `${admin_token}` } }
   );
@@ -637,6 +648,21 @@ export const getAdminfilter = async (name, type) => {
       admin_type: type,
     },
     { headers: { admin_token: `${admin_token}` } }
+  );
+  return response.data;
+};
+export const updateFare = async (re_obj) => {
+  const response = await axios.put(
+    `${process.env.REACT_APP_BASEURL_0}/update_fare_of_vehicles`,
+    re_obj,
+    { headers: { admin_token: `${admin_token}` } }
+  );
+  return response.data;
+};
+
+export const vehicle_fare_list = async (name, type) => {
+  const response = await axios.get(
+    `${process.env.REACT_APP_BASEURL_0}/vehicle_fare_list`
   );
   return response.data;
 };

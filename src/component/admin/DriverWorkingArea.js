@@ -139,15 +139,15 @@ const DriverWorkingArea = () => {
             row.user_active_this_area === 0
               ? "badge bg-secondary"
               : row.user_active_this_area === 1
-              ? "badge bg-primary"
-              : null
+                ? "badge bg-primary"
+                : null
           }
         >
           {row.user_active_this_area === 0
             ? "Unactive"
             : row.user_active_this_area === 1
-            ? "Active"
-            : null}
+              ? "Active"
+              : null}
         </span>
       ),
       sortable: true,
@@ -303,10 +303,10 @@ const DriverWorkingArea = () => {
       {loading === true ? <Loader /> : null}
 
       <div className="row admin_row">
-        <div className="col-lg-3 col-md-6 col-sm-7 col-10">
+        <div className="col-lg-2 col-md-6 col-sm-7 col-10">
           <Sidebar style={{ message: "workingArea" }} />
         </div>
-        <div className="col-lg-9  admin_content_bar mt-5">
+        <div className="col-lg-10  admin_content_bar mt-5">
           <div className="main_content_div">
             <div
               className="dashboard-main-container mt-df25 mt-lg-31"
@@ -423,8 +423,8 @@ const DriverWorkingArea = () => {
         title="Assigned Successfully"
         text={"Assign"}
         onConfirm={closeAssignAlert}
-        // showCancelButton={}
-        // onCancel={}
+      // showCancelButton={}
+      // onCancel={}
       />
     </div>
   );

@@ -586,10 +586,10 @@ const AddDriver = () => {
     <div>
       {loading === true ? <Loader /> : null}
       <div className="row admin_row">
-        <div className="col-lg-3 col-md-6 col-sm-7 col-10">
+        <div className="col-lg-2 col-md-6 col-sm-7 col-10">
           <Sidebar style={{ message: "Add driver" }} />
         </div>
-        <div className="col-lg-9  admin_content_bar mt-5">
+        <div className="col-lg-10  admin_content_bar mt-5">
           <div className="main_content_div">
             <div
               className="dashboard-main-container mt-df25 mt-lg-31"

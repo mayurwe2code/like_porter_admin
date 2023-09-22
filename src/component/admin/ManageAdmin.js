@@ -150,8 +150,8 @@ const ManageAdmin = () => {
         value === null || value === ""
           ? "Admin name is required"
           : /[^A-Za-z 0-9]/g.test(value)
-          ? "Cannot use special character "
-          : null,
+            ? "Cannot use special character "
+            : null,
     ],
     admin_phone: [
       (value) =>
@@ -160,8 +160,8 @@ const ManageAdmin = () => {
           : // : /^(\+\d{1,3}[- ]?)?\d{10}$/g.test(value)
           // ? "Invalid Mobile number "
           value.length > 10 || value.length < 10
-          ? "Contect number should be 10 digit"
-          : null,
+            ? "Contect number should be 10 digit"
+            : null,
     ],
 
     admin_email: [
@@ -169,24 +169,24 @@ const ManageAdmin = () => {
         value === null || value === ""
           ? " Admin  Email required"
           : !/^\S+@\S+\.\S+$/.test(value)
-          ? "Invalid email address"
-          : null,
+            ? "Invalid email address"
+            : null,
     ],
     admin_password: [
       (value) =>
         value === null || value === ""
           ? "Admin Password is required"
           : // : /[^A-Za-z 0-9]/g.test(value)
-            // ? "Cannot use special character "
-            null,
+          // ? "Cannot use special character "
+          null,
     ],
     admin_type: [
       (value) =>
         value === null || value === ""
           ? "Admin Type is required"
           : // : /[^A-Za-z 0-9]/g.test(value)
-            // ? "Cannot use special character "
-            null,
+          // ? "Cannot use special character "
+          null,
     ],
   };
 
@@ -346,10 +346,10 @@ const ManageAdmin = () => {
       {loading === true ? <Loader /> : null}
 
       <div className="row admin_row">
-        <div className="col-lg-3 col-md-6 col-sm-7 col-10">
+        <div className="col-lg-2 col-md-6 col-sm-7 col-10">
           <Sidebar style={{ message: "manageAdmin" }} />
         </div>
-        <div className="col-lg-9  admin_content_bar mt-5">
+        <div className="col-lg-10  admin_content_bar mt-5">
           <div className="main_content_div">
             <div
               className="dashboard-main-container mt-df25 mt-lg-31"
@@ -497,8 +497,8 @@ const ManageAdmin = () => {
                   />
                   {errors.admin_name
                     ? (errors.admin_name || []).map((error) => {
-                        return <small className="text-danger">{error}</small>;
-                      })
+                      return <small className="text-danger">{error}</small>;
+                    })
                     : null}
                 </Form.Group>
               </div>
@@ -527,8 +527,8 @@ const ManageAdmin = () => {
                   />
                   {errors.admin_phone
                     ? (errors.admin_phone || []).map((error) => {
-                        return <small className="text-danger">{error}</small>;
-                      })
+                      return <small className="text-danger">{error}</small>;
+                    })
                     : null}
                 </Form.Group>
               </div>
@@ -558,8 +558,8 @@ const ManageAdmin = () => {
                   />
                   {errors.admin_email
                     ? (errors.admin_email || []).map((error) => {
-                        return <small className="text-danger">{error}</small>;
-                      })
+                      return <small className="text-danger">{error}</small>;
+                    })
                     : null}
                 </Form.Group>
               </div>
@@ -588,8 +588,8 @@ const ManageAdmin = () => {
                   />
                   {errors.admin_password
                     ? (errors.admin_password || []).map((error) => {
-                        return <small className="text-danger">{error}</small>;
-                      })
+                      return <small className="text-danger">{error}</small>;
+                    })
                     : null}
                 </Form.Group>
               </div>
@@ -617,8 +617,8 @@ const ManageAdmin = () => {
                   </Form.Select>
                   {errors.admin_type
                     ? (errors.admin_type || []).map((error) => {
-                        return <small className="text-danger">{error}</small>;
-                      })
+                      return <small className="text-danger">{error}</small>;
+                    })
                     : null}
                 </Form.Group>
               </div>
@@ -650,16 +650,16 @@ const ManageAdmin = () => {
         title="Added Successfully"
         text={"Admin Added"}
         onConfirm={closeAdminAlert}
-        // showCancelButton={}
-        // onCancel={}
+      // showCancelButton={}
+      // onCancel={}
       />
       <SweetAlert
         show={AdminErrorAlert}
         title="Admin Already registerd"
         text={"Please add another Admin"}
         onConfirm={closeAdminAlert}
-        // showCancelButton={}
-        // onCancel={}
+      // showCancelButton={}
+      // onCancel={}
       />
 
       <SweetAlert
@@ -667,16 +667,16 @@ const ManageAdmin = () => {
         title="Updated Successfully"
         text={"Admin update"}
         onConfirm={closeAdminAlert}
-        // showCancelButton={}
-        // onCancel={}
+      // showCancelButton={}
+      // onCancel={}
       />
       <SweetAlert
         show={superAdminUpdateAlert}
         title="Only Super Admin can change"
         text={"Cannot change"}
         onConfirm={closeAdminAlert}
-        // showCancelButton={}
-        // onCancel={}
+      // showCancelButton={}
+      // onCancel={}
       />
 
       <SweetAlert
@@ -684,16 +684,16 @@ const ManageAdmin = () => {
         title="Only Add by Super Admin"
         text={"Can Not change"}
         onConfirm={closeAdminAlert}
-        // showCancelButton={}
-        // onCancel={}
+      // showCancelButton={}
+      // onCancel={}
       />
       <SweetAlert
         show={AdminAssignAlert}
         title="Assigned Successfully"
         text={"Assign"}
         onConfirm={closeAssignAlert}
-        // showCancelButton={}
-        // onCancel={}
+      // showCancelButton={}
+      // onCancel={}
       />
 
       {/* <SweetAlert

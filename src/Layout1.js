@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 
 import OrderList from "./component/admin/orderList";
 
+
 import AdminLogin from "./component/admin/adminLoginSystem/AdminLogin";
 
 import NotFound from "./component/common/notfound";
@@ -21,6 +22,7 @@ import ManageAdmin from "./component/admin/ManageAdmin";
 
 import AdminForgetPassword from "./component/admin/adminLoginSystem/AdminForgetPassword";
 import AuthWrapper from "./Authwrapper";
+import SetVehicleFare from "./component/admin/SetVehicleFare";
 
 function Layout1() {
   return (
@@ -44,6 +46,8 @@ function Layout1() {
         <Route exact element={<AuthWrapper />}>
           <Route path="/admin" element={<AddDriver />} />
           <Route path="/orderList" element={<OrderList />} />
+          {/* <Route path="/setVehicleFares" element={<SetVehicleFare />} /> */}
+          <Route path="/setVehicleFare" element={<SetVehicleFare />} />
           <Route path="/manageAdmin" element={<ManageAdmin />} />
           <Route
             path="/vehicleRegisterByadmin"
